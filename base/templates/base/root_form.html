@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Formulár
+{% endblock %}
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <button type="submit">Submit</button>
+        {#ALTERNATIVNE: <input type="submit" value="Submit">         #}
+    </form>
+
+
+{% endblock %}

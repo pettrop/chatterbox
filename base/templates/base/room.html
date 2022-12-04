@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Rooms - messages
+{% endblock %}
+{% block content %}
+
+    <h1>{{ room }}</h1>
+    <div class="box">{{ room.description }}</div>
+
+    {% for message in messages %}
+        <div class="message">{{ message.id }} - {{ message.body }}</div>
+    {% endfor %}
+
+
+{% endblock %}
