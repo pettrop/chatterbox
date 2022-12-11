@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.forms import Form, Textarea, ModelForm
 from django import forms
 
-from base.models import Room
+from base.models import Room, Message
 LOGGER = getLogger()
 
 class RoomForm(ModelForm):

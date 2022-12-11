@@ -4,10 +4,28 @@
     Rooms
 {% endblock %}
 {% block content %}
-
     <h1>Rooms</h1>
-    {% for room in object_list %}
-        <p><a href="{% url 'room' room.id %}">{{ room.name }}</a></p>
-    {% endfor %}
+    <div class="box"></div>
+
+        {% for room in object_list %}
+            <div class="box">
+                <div style="float: left;">
+                    <p><a href="{% url 'room' room.id %}">{{ room.name | capfirst }}</a></p>
+                    {{ room.description }}
+                </div>
+
+                <div style="float: right;">
+                    {% if perms.base.change_room %}
+                        <a href="{% url 'room_update' room.id %}">Edit</a>
+                    {% endif %}
+
+                    {% if perms.base.delete_room and perms.base.delete_message and user.is_staff  %}
+                        <a href="{% url 'room_delete' room.id %}">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+
+
+        {% endfor %}
 
 {% endblock %}

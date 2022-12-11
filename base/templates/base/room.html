@@ -8,9 +8,21 @@
     <h1>{{ room }}</h1>
     <div class="box">{{ room.description }}</div>
 
-    {% for message in messages %}
-        <div class="message">{{ message.id }} - {{ message.body }}</div>
-    {% endfor %}
+    {% if perms.base.add_message %}
+        <div class="box room__message">
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input name="body_message" placeholder="Write your message here...">
+                </form>
+
+        </div>
+    {% endif %}
+
+        {% for message in messages %}
+            <div class="message">{{ message.id }} - {{ message.body }}</div>
+        {% endfor %}
+
 
 
 {% endblock %}

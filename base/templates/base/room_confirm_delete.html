@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Confirm delete
+{% endblock %}
+{% block content %}
+<div class="box">
+<h2>{{ title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="box">
+            <p>Are you sure, you want to delete room "{{ object.name }}"?</p>
+        </div>
+        <button type="submit">Yes</button>
+        <button onclick="location.href='{% url 'rooms' %}'" type="button">No, back!</button>
+
+        {#ALTERNATIVNE: <input type="submit" value="Submit">         #}
+    </form>
+</div>
+
+{% endblock %}
