@@ -33,30 +33,24 @@ class RoomsView(LoginRequiredMixin, ListView):
 #     template_name = 'base/rooms.html'
 #     extra_context = {'rooms': Room.objects.all()}
 
-
 @login_required
 @permission_required(['base.view_room', 'base.view_message'])
 def room(request, pk):
-    room = Room.objects.get(pk=pk)
-    messages = room.message_set.all()
-    # POST
+    room = Room.objects.get(id=pk)
 
-    if request.user.has_perm('base.add_messages'):
-        if request.method == 'POST':
-
-        # ukladani
+    if request.method == 'POST':
+        if request.user.has_perm('base.add_message'):
             Message.objects.create(
                 user=request.user,
                 room=room,
                 body=request.POST.get('body_message')
             )
             room.participants.add(request.user)
-            return redirect('room', pk=pk)
+            room.save()
+        return redirect('room', pk=pk)
 
-    # GET
-    context = {'messages': messages,
-               'room': room
-               }
+    messages = room.message_set.all()
+    context = {'messages': messages, 'room': room}
     return render(request, template_name='base/room.html', context=context)
 
 
