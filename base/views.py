@@ -51,7 +51,7 @@ def room(request, pk):
                 body=request.POST.get('body_message')
             )
             room.participants.add(request.user)
-        return redirect('room', pk=pk)
+            return redirect('room', pk=pk)
 
     # GET
     context = {'messages': messages,
