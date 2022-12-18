@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
@@ -21,11 +22,25 @@ def hello(request):
 #     context = {'rooms': rooms}
 #     return render(request, template_name='base/rooms.html', context=context)
 
+@login_required
+@permission_required(['base.view_room'])
+def search(request):
+    q = request.GET.get('q', '')
+    rooms = Room.objects.filter(
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+    )
+    context = {
+        'object_list': rooms
+    }
+    return render(request, 'base/rooms.html', context=context)
 
-class RoomsView(LoginRequiredMixin, ListView):
+
+class RoomsView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     template_name = 'base/rooms.html'
     # extra_context = {'rooms': Room.objects.all()}
     model = Room
+    permission_required = 'base.view_room'
 
 
 # ALTERNATIVNY ZAPIS PRI POUZITI TemplateView
@@ -33,8 +48,8 @@ class RoomsView(LoginRequiredMixin, ListView):
 #     template_name = 'base/rooms.html'
 #     extra_context = {'rooms': Room.objects.all()}
 
-@login_required
-@permission_required(['base.view_room', 'base.view_message'])
+
+
 def room(request, pk):
     room = Room.objects.get(id=pk)
 
